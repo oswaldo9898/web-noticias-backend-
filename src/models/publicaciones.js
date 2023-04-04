@@ -13,6 +13,7 @@ const publicacionesSchema = new mongoose.Schema({
     },
     categorias: {
         type: Array,
+        default: [],
         require: true
     },
     contenido: {

@@ -10,11 +10,11 @@ const publicaciones = new Publicaciones();
 
 
 
-router.get('/', (req, res) => {
+router.get('/:tipo', async(req, res) => {
+    const {tipo} = req.params;
     try {
-        // const allPublicaciones = publicaciones.getAll();
-        // res.send({status:'success', payload: allPublicaciones});
-        res.send({status:'success', payload: 'Llego todo'});
+        const allPublicaciones = await publicaciones.getAll(tipo);
+        res.send({status:'success', payload: allPublicaciones});
     } catch (error) {
         res.status(400).send({status: "Error",message: "Ha ocurrido un inconveniente en el servidor"});
     }
@@ -24,12 +24,14 @@ router.get('/', (req, res) => {
 
 
 router.post('/',uploader.single('portadaImg'), async (req, res) => {
-    const {titular, categoria, resumen, contenido, tipo} = req.body;
+    const {titular, categorias, resumen, contenido, tipo} = req.body;
     const file = req.file
+
+    let Arraycategoria = JSON.parse(categorias)
 
     const newPublicacion = {
         titular,
-        categoria,
+        categorias: Arraycategoria,
         resumen,
         contenido,
         tipo,
@@ -47,9 +49,7 @@ router.post('/',uploader.single('portadaImg'), async (req, res) => {
 
 router.get('/obtenerPortada/:img', async(req, res) => {
     var img = req.params['img'];
-    console.log(img)
     fs.stat(`${__dirname}/public/portadas/${img}`, function(err){
-        console.log(err)
         if(!err){
             let path_img = `${__dirname}/public/portadas/${img}`;
             res.status(200).sendFile(path.resolve(path_img));
