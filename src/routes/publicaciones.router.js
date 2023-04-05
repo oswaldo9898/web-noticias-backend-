@@ -47,6 +47,20 @@ router.post('/',uploader.single('portadaImg'), async (req, res) => {
 
 
 
+router.get('/noticia/:id', async(req, res) => {
+    const {id} = req.params;
+    console.log(id)
+    try {
+        const publicacion = await publicaciones.getNoticia(id);
+        res.send({status:'success', payload: publicacion});
+    } catch (error) {
+        res.status(400).send({status: "Error",message: "Ha ocurrido un inconveniente en el servidor"});
+    }
+    
+})
+
+
+
 router.get('/obtenerPortada/:img', async(req, res) => {
     var img = req.params['img'];
     fs.stat(`${__dirname}/public/portadas/${img}`, function(err){
