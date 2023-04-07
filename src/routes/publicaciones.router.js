@@ -12,8 +12,9 @@ const publicaciones = new Publicaciones();
 
 router.get('/:tipo', async(req, res) => {
     const {tipo} = req.params;
+    const {limit,page,sort} = req.query;
     try {
-        const allPublicaciones = await publicaciones.getAll(tipo);
+        const allPublicaciones = await publicaciones.getAll(tipo,limit,page,sort);
         res.send({status:'success', payload: allPublicaciones});
     } catch (error) {
         res.status(400).send({status: "Error",message: "Ha ocurrido un inconveniente en el servidor"});
@@ -49,9 +50,8 @@ router.post('/',uploader.single('portadaImg'), async (req, res) => {
 
 router.get('/noticia/:id', async(req, res) => {
     const {id} = req.params;
-    console.log(id)
     try {
-        const publicacion = await publicaciones.getNoticia(id);
+        const publicacion = await publicaciones.getById(id);
         res.send({status:'success', payload: publicacion});
     } catch (error) {
         res.status(400).send({status: "Error",message: "Ha ocurrido un inconveniente en el servidor"});

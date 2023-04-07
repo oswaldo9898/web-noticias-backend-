@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import mongoosePaginate from 'mongoose-paginate-v2';
 
 const publicacionesCollection = 'publicaciones';
 
@@ -29,6 +30,8 @@ const publicacionesSchema = new mongoose.Schema({
         require: true
     }
 },{ timestamps: true });
+
+publicacionesSchema.plugin(mongoosePaginate);
 
 const publicacionModel = mongoose.model(publicacionesCollection, publicacionesSchema);
 export default publicacionModel;
