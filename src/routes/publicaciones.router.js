@@ -10,7 +10,7 @@ const publicaciones = new Publicaciones();
 
 
 
-router.get('/:tipo', async(req, res) => {
+router.get('/:tipo?', async(req, res) => {
     const {tipo} = req.params;
     const {limit,page,sort} = req.query;
     try {
